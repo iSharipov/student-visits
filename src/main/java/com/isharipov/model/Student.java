@@ -1,12 +1,23 @@
 package com.isharipov.model;
 
+import com.isharipov.annotations.Attribute;
+import com.isharipov.annotations.Table;
+
 /**
  * Created by Илья on 14.10.2016.
  */
+@Table(name = "student")
 public class Student {
+    @Attribute(name = "id")
     private final Integer id;
+
+    @Attribute(name = "name")
     private final String name;
+
+    @Attribute(name = "sirname")
     private final String sirname;
+
+    @Attribute(name = "group")
     private final String group;
 
     public Student(Integer id, String name, String sirname, String group) {

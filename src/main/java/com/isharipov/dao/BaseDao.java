@@ -4,6 +4,7 @@ import com.isharipov.model.Lesson;
 import com.isharipov.model.Student;
 import com.isharipov.model.StudentVisit;
 
+import java.lang.reflect.Method;
 import java.sql.*;
 
 /**
@@ -27,7 +28,11 @@ public abstract class BaseDao<T> {
 
     protected T save(T obj) {
         PreparedStatement statement;
+        Method[] declaredMethods = obj.getClass().getDeclaredMethods();
 
+        for (Method m : declaredMethods) {
+            System.out.println(m.getName());
+        }
         if (obj instanceof Student) {
             Student student = (Student) obj;
             try {

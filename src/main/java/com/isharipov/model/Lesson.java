@@ -1,13 +1,22 @@
 package com.isharipov.model;
 
+import com.isharipov.annotations.Attribute;
+import com.isharipov.annotations.Table;
+
 import java.util.Date;
 
 /**
  * Created by Илья on 14.10.2016.
  */
+@Table(name = "lesson")
 public class Lesson {
+    @Attribute(name = "lesson")
     private final String lesson;
+
+    @Attribute(name = "date")
     private final Date date;
+
+    @Attribute(name = "id")
     private int id;
 
     public Lesson(String lesson, Date date) {
