@@ -6,7 +6,7 @@ import com.isharipov.annotations.Table;
 /**
  * Created by Илья on 14.10.2016.
  */
-@Table(name = "student")
+@Table(name = "students")
 public class Student {
     @Attribute(name = "id")
     private final Integer id;

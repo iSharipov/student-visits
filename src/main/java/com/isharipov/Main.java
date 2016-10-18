@@ -57,12 +57,12 @@ public class Main {
         StudentDao studentDao = new StudentDaoImpl(connection);
         Student student = new Student(null, "Ivan", "Ivanov", "C-51");
         student = studentDao.save(student);
-        System.out.println(student.getId());
+//        System.out.println(student.getId());
 
         LessonDao lessonDao = new LessonDaoImpl(connection);
         Lesson lesson = new Lesson("DB", new Date());
         lessonDao.save(lesson);
-        System.out.println(lesson.getId());
+//        System.out.println(lesson.getId());
 
         StudentVisitDao studentVisitDao = new StudentVisitDaoImpl(connection);
         StudentVisit studentVisit = new StudentVisit(student.getId(), lesson.getId());

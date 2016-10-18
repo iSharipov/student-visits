@@ -1,9 +1,13 @@
 package com.isharipov.dao;
 
+import com.isharipov.annotations.Attribute;
+import com.isharipov.annotations.Table;
+import com.isharipov.exceptions.NoTableFoundException;
 import com.isharipov.model.Lesson;
 import com.isharipov.model.Student;
 import com.isharipov.model.StudentVisit;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.*;
 
@@ -28,11 +32,40 @@ public abstract class BaseDao<T> {
 
     protected T save(T obj) {
         PreparedStatement statement;
-        Method[] declaredMethods = obj.getClass().getDeclaredMethods();
 
-        for (Method m : declaredMethods) {
-            System.out.println(m.getName());
+        Class clazz = obj.getClass();
+        String tableName;
+        String columnName;
+        if (clazz.isAnnotationPresent(Table.class)) {
+            Table table = (Table) clazz.getAnnotation(Table.class);
+            tableName = table.name().toUpperCase();
+        } else {
+            tableName = clazz.getName().toUpperCase();
         }
+
+        try {
+            statement = connection.prepareStatement("SELECT COLUMN_NAME, TYPE_NAME" +
+                    " FROM INFORMATION_SCHEMA.COLUMNS" +
+                    " WHERE TABLE_NAME = " + "'" + tableName + "'");
+            ResultSet metadataQuery = statement.executeQuery();
+            while (metadataQuery.next()) {
+                for (Field field : clazz.getDeclaredFields()) {
+                    if (field.isAnnotationPresent(Attribute.class)) {
+                        Attribute attribute = field.getAnnotation(Attribute.class);
+                        columnName = attribute.name();
+                    }else{
+
+                    }
+                }
+//                System.out.println(metadataQuery.getString(1));
+//                System.out.println(metadataQuery.getString(2));
+            }
+        } catch (SQLException e) {
+            throw new NoTableFoundException(e.getMessage());
+        }
+
+        Method[] declaredMethods = clazz.getDeclaredMethods();
+
         if (obj instanceof Student) {
             Student student = (Student) obj;
             try {
