@@ -1,8 +1,8 @@
 package com.isharipov.service;
 
 import com.isharipov.annotations.Table;
+import com.isharipov.exceptions.NoTableFoundException;
 import com.isharipov.model.TableInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
@@ -17,7 +17,6 @@ import java.util.List;
 public class InitService {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public InitService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -48,7 +47,9 @@ public class InitService {
             List<TableInfo> query = jdbcTemplate.query("SELECT COLUMN_NAME, TYPE_NAME" +
                     " FROM INFORMATION_SCHEMA.COLUMNS" +
                     " WHERE TABLE_NAME = " + "'" + tableName + "'", (rs, i) -> new TableInfo(rs.getString(1), rs.getString(2)));
-
+            if (query.size() == 0) {
+                throw new NoTableFoundException("table: " + tableName + " not found");
+            }
             query.stream().forEach(i -> System.out.println(i.getColumnName() + " " + i.getTypeName()));
         }
     }
