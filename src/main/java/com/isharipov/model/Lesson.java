@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Илья on 14.10.2016.
  */
-@Table(name = "lesson")
+@Table(name = "lessons")
 public class Lesson {
     @Attribute(name = "lesson")
     private final String lesson;
